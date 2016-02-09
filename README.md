@@ -1,2 +1,3 @@
-# node-kjirou-utils
-My Node.js utilities
+# @kjirou/utils
+
+Node.js miscellaneous utilities for myself

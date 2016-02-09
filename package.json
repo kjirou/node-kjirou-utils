@@ -7,9 +7,8 @@
     "url": "https://github.com/kjirou/node-kjirou-utils/issues"
   },
   "devDependencies": {
-    "babel": "6.3.26",
+    "babel-cli": "6.4.5",
     "babel-preset-es2015": "6.3.13",
-    "babel-preset-react": "6.3.13",
     "babel-register": "6.4.3",
     "fixpack": "2.2.0",
     "mocha": "2.4.5"
@@ -18,12 +17,20 @@
     "node": ">=4.2",
     "npm": ">=2.14"
   },
+  "files": [
+    "dist",
+    "src",
+    "test",
+    ".babelrc",
+    "README.md",
+    "package.json"
+  ],
   "homepage": "https://github.com/kjirou/node-kjirou-utils#readme",
   "keywords": [
     "utils"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kjirou/node-kjirou-utils.git"

@@ -44,18 +44,29 @@ var preventEvents = exports.preventEvents = function preventEvents(event) {
  *
  * Mainly use this when you define the game data from JSON
  *
- * TODO: I want to set function.name
- *
- * @param {Function} BaseResource
- * @param {Array<object>} sourceDataList
+ * @param {Function} BaseResource - A base class
+ * @param {Array<object>} sourceDataList - JSON format data
+ * @param {object|undefined} options
  * @return {Array<Function>} - Sub class list
  */
 var createClassBasedResourceList = exports.createClassBasedResourceList = function createClassBasedResourceList(BaseResource, sourceDataList) {
-  return sourceDataList.map(function (_ref) {
-    var _ref$constants = _ref.constants;
-    var constants = _ref$constants === undefined ? {} : _ref$constants;
-    var _ref$properties = _ref.properties;
-    var properties = _ref$properties === undefined ? {} : _ref$properties;
+  var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+  options = Object.assign({
+    naming: function naming(_ref) {
+      var Resource = _ref.Resource;
+      var constants = _ref.constants;
+      var properties = _ref.properties;
+
+      return null;
+    }
+  }, options);
+
+  return sourceDataList.map(function (_ref2) {
+    var _ref2$constants = _ref2.constants;
+    var constants = _ref2$constants === undefined ? {} : _ref2$constants;
+    var _ref2$properties = _ref2.properties;
+    var properties = _ref2$properties === undefined ? {} : _ref2$properties;
 
     var Resource = function (_BaseResource) {
       _inherits(Resource, _BaseResource);
@@ -80,6 +91,14 @@ var createClassBasedResourceList = exports.createClassBasedResourceList = functi
 
     ;
     Object.assign(Resource, constants);
+
+    var name = options.naming({ Resource: Resource, constants: constants, properties: properties });
+    if (name !== null && name !== undefined) {
+      Object.defineProperty(Resource, 'name', { writable: true });
+      Resource.name = name;
+      Object.defineProperty(Resource, 'name', { writable: false });
+    }
+
     return Resource;
   });
 };

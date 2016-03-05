@@ -30,13 +30,18 @@ export const preventEvents = (event) => {
  *
  * Mainly use this when you define the game data from JSON
  *
- * TODO: I want to set function.name
- *
- * @param {Function} BaseResource
- * @param {Array<object>} sourceDataList
+ * @param {Function} BaseResource - A base class
+ * @param {Array<object>} sourceDataList - JSON format data
+ * @param {object|undefined} options
  * @return {Array<Function>} - Sub class list
  */
-export const createClassBasedResourceList = (BaseResource, sourceDataList) => {
+export const createClassBasedResourceList = (BaseResource, sourceDataList, options = {}) => {
+  options = Object.assign({
+    naming: ({ Resource, constants, properties }) => {
+      return null;
+    },
+  }, options);
+
   return sourceDataList.map(({ constants = {}, properties = {} }) => {
     class Resource extends BaseResource {
       constructor(...args) {
@@ -45,6 +50,14 @@ export const createClassBasedResourceList = (BaseResource, sourceDataList) => {
       }
     };
     Object.assign(Resource, constants);
+
+    const name = options.naming({ Resource, constants, properties });
+    if (name !== null && name !== undefined) {
+      Object.defineProperty(Resource, 'name', { writable: true });
+      Resource.name = name;
+      Object.defineProperty(Resource, 'name', { writable: false });
+    }
+
     return Resource;
   });
 };

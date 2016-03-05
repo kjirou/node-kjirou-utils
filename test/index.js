@@ -24,7 +24,7 @@ describe('node-kjirou-utils', () => {
 
   it('createClassBasedResourceList', () => {
     class Item {}
-    const itemList = createClassBasedResourceList(Item, [
+    const itemListData = [
       {
         constants: {
           label: 'Bomb',
@@ -35,7 +35,10 @@ describe('node-kjirou-utils', () => {
         },
       },
       {},
-    ]);
+    ];
+    let itemList;
+
+    itemList = createClassBasedResourceList(Item, itemListData);
 
     assert(itemList[0].prototype instanceof Item);
     assert.strictEqual(itemList[0].label, 'Bomb');
@@ -45,5 +48,19 @@ describe('node-kjirou-utils', () => {
     assert.strictEqual(item.price, 100);
 
     new itemList[1]();  // should be created as a class
+
+
+    // test options.naming
+    itemList = createClassBasedResourceList(Item, itemListData, {
+      naming: ({ Resource, constants, properties }) => {
+        if (typeof constants.label === 'string') {
+          return constants.label + 'Item';
+        }
+        return null;
+      },
+    });
+
+    assert.strictEqual(itemList[0].name, 'BombItem');
+    assert.strictEqual(itemList[1].name, 'Resource');
   });
 });

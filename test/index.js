@@ -2,12 +2,18 @@ import assert from 'assert';
 
 import {
   createClassBasedResourceList,
+  objectFromKeys,
   toSignedNumber,
   within,
 } from '../src';
 
 
 describe('node-kjirou-utils', () => {
+  it('objectFromKeys', () => {
+    assert.deepStrictEqual(objectFromKeys(['FOO', 'BAR']), { FOO: 'FOO', BAR: 'BAR' });
+    assert.deepStrictEqual(objectFromKeys(['FOO', 'BAR', 'FOO']), { FOO: 'FOO', BAR: 'BAR' });
+    assert.deepStrictEqual(objectFromKeys([]), {});
+  });
 
   it('within', () => {
     assert.strictEqual(within(10, 8, 12), 10);

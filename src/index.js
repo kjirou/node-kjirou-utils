@@ -1,3 +1,9 @@
+export const objectFromKeys = (keys) => {
+  const dict = {};
+  keys.forEach(key => dict[key] = key);
+  return dict;
+};
+
 export const within = (num, minNum, maxNum) => {
   return Math.min(Math.max(num, minNum), maxNum);
 };
